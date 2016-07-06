@@ -1,0 +1,11 @@
+--- configure.orig	2014-03-09 08:20:27.876853144 +0000
++++ configure	2014-03-09 08:21:44.207848961 +0000
+@@ -5359,7 +5359,7 @@
+   ac_status=$?
+   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+   test $ac_status = 0; }; then
+-  pkg_cv_GDKLIB_LIBS=`$PKG_CONFIG --libs "gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0 gtk+-2.0" 2>/dev/null`
++  pkg_cv_GDKLIB_LIBS=`$PKG_CONFIG --libs "x11 gdk-pixbuf-2.0 gdk-pixbuf-xlib-2.0 gtk+-2.0" 2>/dev/null`
+ else
+   pkg_failed=yes
+ fi

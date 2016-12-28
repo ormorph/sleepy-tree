@@ -23,6 +23,7 @@ DEPEND="${RDEPEND}"
 src_install() {
     mkdir -p ${D}/usr/share/{${PN},applications}
     cp ${FILESDIR}/${PN}.desktop ${D}/usr/share/applications
+    rm -rf ${S}/.git
     cp -rf ${S}/. ${D}/usr/share/${PN}
     dobin ${FILESDIR}/${PN}
 }

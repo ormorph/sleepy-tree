@@ -13,7 +13,8 @@ SLOT="0"
 KEYWORDS="~x86 ~amd64"
 IUSE=""
 
-RDEPEND="virtual/ffmpeg
+RDEPEND="gnome-extra/yad
+         virtual/ffmpeg
          x11-apps/xrandr
          x11-apps/xwininfo
          x11-apps/xrectsel"

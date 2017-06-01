@@ -1,13 +1,19 @@
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=3
-SUPPORT_PYTHON_ABIS=1
-RESTRICT_PYTHON_ABIS="2.*"
-PYTHON_MODNAME="oblogout"
+EAPI="5"
 
-inherit versionator python
+PYTHON_COMPAT=( python2_7 )
 
-MY_PV=$(get_version_component_range 1-2)
+inherit distutils-r1
+
+#EAPI=3
+#SUPPORT_PYTHON_ABIS=1
+#RESTRICT_PYTHON_ABIS="2.*"
+#PYTHON_MODNAME="oblogout"
+
+#inherit versionator python
+
+MY_PV="0.2"
 S=${WORKDIR}/${PN}
 
 DESCRIPTION="OBLogout is a expandable, configurable, and theme-able logout script designed to be used in a Openbox desktop environment."
@@ -34,12 +40,8 @@ src_prepare(){
 	epatch "${FILESDIR}/oblogout-pil.patch" || die
 }
 
-src_compile() {
-	python setup.py build || die "failed to build"
-}
-
-src_install() {
-	python setup.py install --root="${D}" || die "failed to build"
+python_install_all() {
+        distutils-r1_python_install_all
 	insinto /etc
 	doins ${FILESDIR}/oblogout.conf || die
 }

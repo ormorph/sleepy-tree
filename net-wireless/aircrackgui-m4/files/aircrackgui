@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if tty >/dev/null ; then
+    cd /tmp
+    sudo /usr/share/aircrackgui-m4/aircrack-GUI
+else
+    cd /tmp
+    gksudo /usr/share/aircrackgui-m4/aircrack-GUI
+fi
+exit 0

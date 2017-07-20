@@ -1,0 +1,609 @@
+diff -urN aircrack-ng.orig/src/osdep/radiotap/ieee80211_radiotap.h aircrack-ng/src/osdep/radiotap/ieee80211_radiotap.h
+--- aircrack-ng.orig/src/osdep/radiotap/ieee80211_radiotap.h	1970-01-01 03:00:00.000000000 +0300
++++ aircrack-ng/src/osdep/radiotap/ieee80211_radiotap.h	2017-07-19 16:47:23.897189073 +0300
+@@ -0,0 +1,260 @@
++/* $FreeBSD: src/sys/net80211/ieee80211_radiotap.h,v 1.5 2005/01/22 20:12:05 sam Exp $ */
++/* $NetBSD: ieee80211_radiotap.h,v 1.11 2005/06/22 06:16:02 dyoung Exp $ */
++
++/*-
++ * Copyright (c) 2003, 2004 David Young.  All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ * 3. The name of David Young may not be used to endorse or promote
++ *    products derived from this software without specific prior
++ *    written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY DAVID YOUNG ``AS IS'' AND ANY
++ * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
++ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
++ * PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL DAVID
++ * YOUNG BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
++ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
++ * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
++ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
++ * OF SUCH DAMAGE.
++ */
++
++/*
++ * Modifications to fit into the linux IEEE 802.11 stack,
++ * Mike Kershaw (dragorn@kismetwireless.net)
++ */
++
++#ifndef IEEE80211RADIOTAP_H
++#define IEEE80211RADIOTAP_H
++
++/* Radiotap header version (from official NetBSD feed) */
++#define IEEE80211RADIOTAP_VERSION	"1.5"
++/* Base version of the radiotap packet header data */
++#define PKTHDR_RADIOTAP_VERSION		0
++
++/* A generic radio capture format is desirable. There is one for
++ * Linux, but it is neither rigidly defined (there were not even
++ * units given for some fields) nor easily extensible.
++ *
++ * I suggest the following extensible radio capture format. It is
++ * based on a bitmap indicating which fields are present.
++ *
++ * I am trying to describe precisely what the application programmer
++ * should expect in the following, and for that reason I tell the
++ * units and origin of each measurement (where it applies), or else I
++ * use sufficiently weaselly language ("is a monotonically nondecreasing
++ * function of...") that I cannot set false expectations for lawyerly
++ * readers.
++ */
++
++/* XXX tcpdump/libpcap do not tolerate variable-length headers,
++ * yet, so we pad every radiotap header to 64 bytes. Ugh.
++ */
++#define IEEE80211_RADIOTAP_HDRLEN	64
++
++/* The radio capture header precedes the 802.11 header.
++ * All data in the header is little endian on all platforms.
++ */
++struct ieee80211_radiotap_header {
++	u8 it_version;		/* Version 0. Only increases
++				 * for drastic changes,
++				 * introduction of compatible
++				 * new fields does not count.
++				 */
++	u8 it_pad;
++	u16 it_len;		/* length of the whole
++				 * header in bytes, including
++				 * it_version, it_pad,
++				 * it_len, and data fields.
++				 */
++	u32 it_present;		/* A bitmap telling which
++				 * fields are present. Set bit 31
++				 * (0x80000000) to extend the
++				 * bitmap by another 32 bits.
++				 * Additional extensions are made
++				 * by setting bit 31.
++				 */
++};
++
++#define IEEE80211_RADIOTAP_PRESENT_EXTEND_MASK 0x80000000
++
++/* Name                                 Data type    Units
++ * ----                                 ---------    -----
++ *
++ * IEEE80211_RADIOTAP_TSFT              __le64       microseconds
++ *
++ *      Value in microseconds of the MAC's 64-bit 802.11 Time
++ *      Synchronization Function timer when the first bit of the
++ *      MPDU arrived at the MAC. For received frames, only.
++ *
++ * IEEE80211_RADIOTAP_CHANNEL           2 x __le16   MHz, bitmap
++ *
++ *      Tx/Rx frequency in MHz, followed by flags (see below).
++ *
++ * IEEE80211_RADIOTAP_FHSS              __le16       see below
++ *
++ *      For frequency-hopping radios, the hop set (first byte)
++ *      and pattern (second byte).
++ *
++ * IEEE80211_RADIOTAP_RATE              u8           500kb/s
++ *
++ *      Tx/Rx data rate
++ *
++ * IEEE80211_RADIOTAP_DBM_ANTSIGNAL     s8           decibels from
++ *                                                   one milliwatt (dBm)
++ *
++ *      RF signal power at the antenna, decibel difference from
++ *      one milliwatt.
++ *
++ * IEEE80211_RADIOTAP_DBM_ANTNOISE      s8           decibels from
++ *                                                   one milliwatt (dBm)
++ *
++ *      RF noise power at the antenna, decibel difference from one
++ *      milliwatt.
++ *
++ * IEEE80211_RADIOTAP_DB_ANTSIGNAL      u8           decibel (dB)
++ *
++ *      RF signal power at the antenna, decibel difference from an
++ *      arbitrary, fixed reference.
++ *
++ * IEEE80211_RADIOTAP_DB_ANTNOISE       u8           decibel (dB)
++ *
++ *      RF noise power at the antenna, decibel difference from an
++ *      arbitrary, fixed reference point.
++ *
++ * IEEE80211_RADIOTAP_LOCK_QUALITY      __le16       unitless
++ *
++ *      Quality of Barker code lock. Unitless. Monotonically
++ *      nondecreasing with "better" lock strength. Called "Signal
++ *      Quality" in datasheets.  (Is there a standard way to measure
++ *      this?)
++ *
++ * IEEE80211_RADIOTAP_TX_ATTENUATION    __le16       unitless
++ *
++ *      Transmit power expressed as unitless distance from max
++ *      power set at factory calibration.  0 is max power.
++ *      Monotonically nondecreasing with lower power levels.
++ *
++ * IEEE80211_RADIOTAP_DB_TX_ATTENUATION __le16       decibels (dB)
++ *
++ *      Transmit power expressed as decibel distance from max power
++ *      set at factory calibration.  0 is max power.  Monotonically
++ *      nondecreasing with lower power levels.
++ *
++ * IEEE80211_RADIOTAP_DBM_TX_POWER      s8           decibels from
++ *                                                   one milliwatt (dBm)
++ *
++ *      Transmit power expressed as dBm (decibels from a 1 milliwatt
++ *      reference). This is the absolute power level measured at
++ *      the antenna port.
++ *
++ * IEEE80211_RADIOTAP_FLAGS             u8           bitmap
++ *
++ *      Properties of transmitted and received frames. See flags
++ *      defined below.
++ *
++ * IEEE80211_RADIOTAP_ANTENNA           u8           antenna index
++ *
++ *      Unitless indication of the Rx/Tx antenna for this packet.
++ *      The first antenna is antenna 0.
++ *
++ * IEEE80211_RADIOTAP_RX_FLAGS          __le16       bitmap
++ *
++ *     Properties of received frames. See flags defined below.
++ *
++ * IEEE80211_RADIOTAP_TX_FLAGS          __le16       bitmap
++ *
++ *     Properties of transmitted frames. See flags defined below.
++ *
++ * IEEE80211_RADIOTAP_RTS_RETRIES       u8           data
++ *
++ *     Number of rts retries a transmitted frame used.
++ *
++ * IEEE80211_RADIOTAP_DATA_RETRIES      u8           data
++ *
++ *     Number of unicast retries a transmitted frame used.
++ *
++ */
++enum ieee80211_radiotap_type {
++	IEEE80211_RADIOTAP_TSFT = 0,
++	IEEE80211_RADIOTAP_FLAGS = 1,
++	IEEE80211_RADIOTAP_RATE = 2,
++	IEEE80211_RADIOTAP_CHANNEL = 3,
++	IEEE80211_RADIOTAP_FHSS = 4,
++	IEEE80211_RADIOTAP_DBM_ANTSIGNAL = 5,
++	IEEE80211_RADIOTAP_DBM_ANTNOISE = 6,
++	IEEE80211_RADIOTAP_LOCK_QUALITY = 7,
++	IEEE80211_RADIOTAP_TX_ATTENUATION = 8,
++	IEEE80211_RADIOTAP_DB_TX_ATTENUATION = 9,
++	IEEE80211_RADIOTAP_DBM_TX_POWER = 10,
++	IEEE80211_RADIOTAP_ANTENNA = 11,
++	IEEE80211_RADIOTAP_DB_ANTSIGNAL = 12,
++	IEEE80211_RADIOTAP_DB_ANTNOISE = 13,
++	IEEE80211_RADIOTAP_RX_FLAGS = 14,
++	IEEE80211_RADIOTAP_TX_FLAGS = 15,
++	IEEE80211_RADIOTAP_RTS_RETRIES = 16,
++	IEEE80211_RADIOTAP_DATA_RETRIES = 17,
++	IEEE80211_RADIOTAP_EXT = 31
++};
++
++/* Channel flags. */
++#define	IEEE80211_CHAN_TURBO	0x0010	/* Turbo channel */
++#define	IEEE80211_CHAN_CCK	0x0020	/* CCK channel */
++#define	IEEE80211_CHAN_OFDM	0x0040	/* OFDM channel */
++#define	IEEE80211_CHAN_2GHZ	0x0080	/* 2 GHz spectrum channel. */
++#define	IEEE80211_CHAN_5GHZ	0x0100	/* 5 GHz spectrum channel */
++#define	IEEE80211_CHAN_PASSIVE	0x0200	/* Only passive scan allowed */
++#define	IEEE80211_CHAN_DYN	0x0400	/* Dynamic CCK-OFDM channel */
++#define	IEEE80211_CHAN_GFSK	0x0800	/* GFSK channel (FHSS PHY) */
++
++/* For IEEE80211_RADIOTAP_FLAGS */
++#define	IEEE80211_RADIOTAP_F_CFP	0x01	/* sent/received
++						 * during CFP
++						 */
++#define	IEEE80211_RADIOTAP_F_SHORTPRE	0x02	/* sent/received
++						 * with short
++						 * preamble
++						 */
++#define	IEEE80211_RADIOTAP_F_WEP	0x04	/* sent/received
++						 * with WEP encryption
++						 */
++#define	IEEE80211_RADIOTAP_F_FRAG	0x08	/* sent/received
++						 * with fragmentation
++						 */
++#define	IEEE80211_RADIOTAP_F_FCS	0x10	/* frame includes FCS */
++#define	IEEE80211_RADIOTAP_F_DATAPAD	0x20	/* frame has padding between
++						 * 802.11 header and payload
++						 * (to 32-bit boundary)
++						 */
++/* For IEEE80211_RADIOTAP_RX_FLAGS */
++#define IEEE80211_RADIOTAP_F_RX_BADFCS	0x0001	/* frame failed crc check */
++
++/* For IEEE80211_RADIOTAP_TX_FLAGS */
++#define IEEE80211_RADIOTAP_F_TX_FAIL	0x0001	/* failed due to excessive
++						 * retries */
++#define IEEE80211_RADIOTAP_F_TX_CTS	0x0002	/* used cts 'protection' */
++#define IEEE80211_RADIOTAP_F_TX_RTS	0x0004	/* used rts/cts handshake */
++#define IEEE80211_RADIOTAP_F_TX_NOACK	0x0008	/* frame should not be ACKed */
++#define IEEE80211_RADIOTAP_F_TX_NOSEQ	0x0010	/* sequence number handled
++						 * by userspace */
++
++/* Ugly macro to convert literal channel numbers into their mhz equivalents
++ * There are certianly some conditions that will break this (like feeding it '30')
++ * but they shouldn't arise since nothing talks on channel 30. */
++#define ieee80211chan2mhz(x) \
++	(((x) <= 14) ? \
++	(((x) == 14) ? 2484 : ((x) * 5) + 2407) : \
++	((x) + 1000) * 5)
++
++#endif				/* IEEE80211_RADIOTAP_H */
+diff -urN aircrack-ng.orig/src/osdep/radiotap/Makefile aircrack-ng/src/osdep/radiotap/Makefile
+--- aircrack-ng.orig/src/osdep/radiotap/Makefile	1970-01-01 03:00:00.000000000 +0300
++++ aircrack-ng/src/osdep/radiotap/Makefile	2017-07-19 16:47:23.897189073 +0300
+@@ -0,0 +1,8 @@
++all:
++
++install:
++
++uninstall:
++
++clean:
++	rm -f *.o
+diff -urN aircrack-ng.orig/src/osdep/radiotap/radiotap-parser.c aircrack-ng/src/osdep/radiotap/radiotap-parser.c
+--- aircrack-ng.orig/src/osdep/radiotap/radiotap-parser.c	1970-01-01 03:00:00.000000000 +0300
++++ aircrack-ng/src/osdep/radiotap/radiotap-parser.c	2017-07-19 16:47:23.901189073 +0300
+@@ -0,0 +1,247 @@
++ /*
++  *  Copyright (c) 2007, 2008, Andy Green <andy@warmcat.com>
++  *
++  *  This program is free software; you can redistribute it and/or modify
++  *  it under the terms of the GNU General Public License as published by
++  *  the Free Software Foundation; either version 2 of the License, or
++  *  (at your option) any later version.
++  *
++  *  This program is distributed in the hope that it will be useful,
++  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++  *  GNU General Public License for more details.
++  *
++  *  You should have received a copy of the GNU General Public License
++  *  along with this program; if not, write to the Free Software
++  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++  */
++
++#include <sys/types.h>
++#include <stdio.h>
++#include <errno.h>
++
++#include "radiotap-parser.h"
++
++
++/*
++ * Radiotap header iteration
++ *   implemented in src/radiotap-parser.c
++ *
++ * call __ieee80211_radiotap_iterator_init() to init a semi-opaque iterator
++ * struct ieee80211_radiotap_iterator (no need to init the struct beforehand)
++ * then loop calling __ieee80211_radiotap_iterator_next()... it returns -1
++ * if there are no more args in the header, or the next argument type index
++ * that is present.  The iterator's this_arg member points to the start of the
++ * argument associated with the current argument index that is present,
++ * which can be found in the iterator's this_arg_index member.  This arg
++ * index corresponds to the IEEE80211_RADIOTAP_... defines.
++ */
++
++
++int ieee80211_radiotap_iterator_init(
++	struct ieee80211_radiotap_iterator * iterator,
++	struct ieee80211_radiotap_header * radiotap_header,
++	int max_length)
++{
++	if(iterator == NULL)
++		return (-EINVAL);
++
++	if(radiotap_header == NULL)
++		return (-EINVAL);
++	/* Linux only supports version 0 radiotap format */
++
++	if (radiotap_header->it_version)
++		return (-EINVAL);
++
++	/* sanity check for allowed length and radiotap length field */
++
++	if (max_length < (le16_to_cpu(radiotap_header->it_len)))
++		return (-EINVAL);
++
++	iterator->rtheader = radiotap_header;
++	iterator->max_length = le16_to_cpu(radiotap_header->it_len);
++	iterator->arg_index = 0;
++	iterator->bitmap_shifter = le32_to_cpu(radiotap_header->it_present);
++	iterator->arg = ((u8 *)radiotap_header) +
++			sizeof (struct ieee80211_radiotap_header);
++	iterator->this_arg = 0;
++
++	/* find payload start allowing for extended bitmap(s) */
++
++	if (unlikely(iterator->bitmap_shifter &
++	    IEEE80211_RADIOTAP_PRESENT_EXTEND_MASK)) {
++		while (le32_to_cpu(*((u32 *)iterator->arg)) &
++		    IEEE80211_RADIOTAP_PRESENT_EXTEND_MASK) {
++			iterator->arg += sizeof (u32);
++
++			/*
++			 * check for insanity where the present bitmaps
++			 * keep claiming to extend up to or even beyond the
++			 * stated radiotap header length
++			 */
++
++			if ((((void*)iterator->arg) - ((void*)iterator->rtheader)) >
++			    iterator->max_length)
++				return (-EINVAL);
++
++		}
++
++		iterator->arg += sizeof (u32);
++
++		/*
++		 * no need to check again for blowing past stated radiotap
++		 * header length, becuase ieee80211_radiotap_iterator_next
++		 * checks it before it is dereferenced
++		 */
++
++	}
++
++	/* we are all initialized happily */
++
++	return (0);
++}
++
++
++/**
++ * ieee80211_radiotap_iterator_next - return next radiotap parser iterator arg
++ * @iterator: radiotap_iterator to move to next arg (if any)
++ *
++ * Returns: next present arg index on success or negative if no more or error
++ *
++ * This function returns the next radiotap arg index (IEEE80211_RADIOTAP_...)
++ * and sets iterator->this_arg to point to the payload for the arg.  It takes
++ * care of alignment handling and extended present fields.  interator->this_arg
++ * can be changed by the caller.  The args pointed to are in little-endian
++ * format.
++ */
++
++int ieee80211_radiotap_iterator_next(
++	struct ieee80211_radiotap_iterator * iterator)
++{
++
++	/*
++	 * small length lookup table for all radiotap types we heard of
++	 * starting from b0 in the bitmap, so we can walk the payload
++	 * area of the radiotap header
++	 *
++	 * There is a requirement to pad args, so that args
++	 * of a given length must begin at a boundary of that length
++	 * -- but note that compound args are allowed (eg, 2 x u16
++	 * for IEEE80211_RADIOTAP_CHANNEL) so total arg length is not
++	 * a reliable indicator of alignment requirement.
++	 *
++	 * upper nybble: content alignment for arg
++	 * lower nybble: content length for arg
++	 */
++
++	static const u8 rt_sizes[] = {
++		[IEEE80211_RADIOTAP_TSFT] = 0x88,
++		[IEEE80211_RADIOTAP_FLAGS] = 0x11,
++		[IEEE80211_RADIOTAP_RATE] = 0x11,
++		[IEEE80211_RADIOTAP_CHANNEL] = 0x24,
++		[IEEE80211_RADIOTAP_FHSS] = 0x22,
++		[IEEE80211_RADIOTAP_DBM_ANTSIGNAL] = 0x11,
++		[IEEE80211_RADIOTAP_DBM_ANTNOISE] = 0x11,
++		[IEEE80211_RADIOTAP_LOCK_QUALITY] = 0x22,
++		[IEEE80211_RADIOTAP_TX_ATTENUATION] = 0x22,
++		[IEEE80211_RADIOTAP_DB_TX_ATTENUATION] = 0x22,
++		[IEEE80211_RADIOTAP_DBM_TX_POWER] = 0x11,
++		[IEEE80211_RADIOTAP_ANTENNA] = 0x11,
++		[IEEE80211_RADIOTAP_DB_ANTSIGNAL] = 0x11,
++		[IEEE80211_RADIOTAP_DB_ANTNOISE] = 0x11
++		/*
++		 * add more here as they are defined in
++		 * include/net/ieee80211_radiotap.h
++		 */
++	};
++
++	/*
++	 * for every radiotap entry we can at
++	 * least skip (by knowing the length)...
++	 */
++
++	while (iterator->arg_index < (int)sizeof (rt_sizes)) {
++		int hit = 0;
++
++		if (!(iterator->bitmap_shifter & 1))
++			goto next_entry; /* arg not present */
++
++		/*
++		 * arg is present, account for alignment padding
++		 *  8-bit args can be at any alignment
++		 * 16-bit args must start on 16-bit boundary
++		 * 32-bit args must start on 32-bit boundary
++		 * 64-bit args must start on 64-bit boundary
++		 *
++		 * note that total arg size can differ from alignment of
++		 * elements inside arg, so we use upper nybble of length
++		 * table to base alignment on
++		 *
++		 * also note: these alignments are ** relative to the
++		 * start of the radiotap header **.  There is no guarantee
++		 * that the radiotap header itself is aligned on any
++		 * kind of boundary.
++		 */
++
++		if ((((void*)iterator->arg)-((void*)iterator->rtheader)) &
++		    ((rt_sizes[iterator->arg_index] >> 4) - 1))
++			iterator->arg_index +=
++				(rt_sizes[iterator->arg_index] >> 4) -
++				((((void*)iterator->arg) -
++				((void*)iterator->rtheader)) &
++				((rt_sizes[iterator->arg_index] >> 4) - 1));
++
++		/*
++		 * this is what we will return to user, but we need to
++		 * move on first so next call has something fresh to test
++		 */
++
++		iterator->this_arg_index = iterator->arg_index;
++		iterator->this_arg = iterator->arg;
++		hit = 1;
++
++		/* internally move on the size of this arg */
++
++		iterator->arg += rt_sizes[iterator->arg_index] & 0x0f;
++
++		/*
++		 * check for insanity where we are given a bitmap that
++		 * claims to have more arg content than the length of the
++		 * radiotap section.  We will normally end up equalling this
++		 * max_length on the last arg, never exceeding it.
++		 */
++
++		if ((((void*)iterator->arg) - ((void*)iterator->rtheader)) >
++		    iterator->max_length)
++			return (-EINVAL);
++
++	next_entry:
++
++		iterator->arg_index++;
++		if (unlikely((iterator->arg_index & 31) == 0)) {
++			/* completed current u32 bitmap */
++			if (iterator->bitmap_shifter & 1) {
++				/* b31 was set, there is more */
++				/* move to next u32 bitmap */
++				iterator->bitmap_shifter = le32_to_cpu(
++					*iterator->next_bitmap);
++				iterator->next_bitmap++;
++			} else {
++				/* no more bitmaps: end */
++				iterator->arg_index = sizeof (rt_sizes);
++			}
++		} else { /* just try the next bit */
++			iterator->bitmap_shifter >>= 1;
++		}
++
++		/* if we found a valid arg earlier, return it now */
++
++		if (hit)
++			return (iterator->this_arg_index);
++
++	}
++
++	/* we don't know how to handle any more args, we're done */
++
++	return (-1);
++}
+diff -urN aircrack-ng.orig/src/osdep/radiotap/radiotap-parser.h aircrack-ng/src/osdep/radiotap/radiotap-parser.h
+--- aircrack-ng.orig/src/osdep/radiotap/radiotap-parser.h	1970-01-01 03:00:00.000000000 +0300
++++ aircrack-ng/src/osdep/radiotap/radiotap-parser.h	2017-07-19 16:47:23.897189073 +0300
+@@ -0,0 +1,78 @@
++/*
++ *  Copyright (c) 2007, 2008, Andy Green <andy@warmcat.com>
++ *
++ *   This program is free software; you can redistribute it and/or modify
++ *   it under the terms of the GNU General Public License as published by
++ *   the Free Software Foundation; version 2.
++ *
++ *   This program is distributed in the hope that it will be useful,
++ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *   GNU General Public License for more details.
++ *
++ *   You should have received a copy of the GNU General Public License along
++ *   with this program; if not, write to the Free Software Foundation, Inc.,
++ *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++
++#define	__user
++#include "../byteorder.h"
++#include <stdint.h>
++
++typedef uint64_t u64;
++typedef uint32_t u32;
++typedef uint16_t u16;
++typedef uint8_t u8;
++
++#ifndef unlikely
++#define	unlikely(x) (x)
++#endif
++
++#include "ieee80211_radiotap.h"
++
++
++/*
++ * Radiotap header iteration
++ *   implemented in src/radiotap-parser.c
++ *
++ * call __ieee80211_radiotap_iterator_init() to init a semi-opaque iterator
++ * struct ieee80211_radiotap_iterator (no need to init the struct beforehand)
++ * then loop calling __ieee80211_radiotap_iterator_next()... it returns -1
++ * if there are no more args in the header, or the next argument type index
++ * that is present.  The iterator's this_arg member points to the start of the
++ * argument associated with the current argument index that is present,
++ * which can be found in the iterator's this_arg_index member.  This arg
++ * index corresponds to the IEEE80211_RADIOTAP_... defines.
++ */
++/**
++ * struct ieee80211_radiotap_iterator - tracks walk thru present radiotap args
++ * @rtheader: pointer to the radiotap header we are walking through
++ * @max_length: length of radiotap header in cpu byte ordering
++ * @this_arg_index: IEEE80211_RADIOTAP_... index of current arg
++ * @this_arg: pointer to current radiotap arg
++ * @arg_index: internal next argument index
++ * @arg: internal next argument pointer
++ * @next_bitmap: internal pointer to next present u32
++ * @bitmap_shifter: internal shifter for curr u32 bitmap, b0 set == arg present
++ */
++
++struct ieee80211_radiotap_iterator {
++	struct ieee80211_radiotap_header *rtheader;
++	int max_length;
++	int this_arg_index;
++	u8 * this_arg;
++
++	int arg_index;
++	u8 * arg;
++	u32 *next_bitmap;
++	u32 bitmap_shifter;
++};
++
++int ieee80211_radiotap_iterator_init(
++	struct ieee80211_radiotap_iterator * iterator,
++	struct ieee80211_radiotap_header * radiotap_header,
++	int max_length);
++
++int ieee80211_radiotap_iterator_next(
++	struct ieee80211_radiotap_iterator * iterator);

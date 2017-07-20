@@ -1,0 +1,72 @@
+diff -urN trunk.orig/attackaircrack.cpp trunk/attackaircrack.cpp
+--- trunk.orig/attackaircrack.cpp	2017-07-19 18:01:29.421357742 +0300
++++ trunk/attackaircrack.cpp	2017-07-19 18:14:45.261387937 +0300
+@@ -40,7 +40,7 @@
+ 
+     }   while (left != 10); //100 max
+ 
+-    const QString command = "../" + AIRCRACK_COM +
++    const QString command = AIRCRACK_COM +
+             " -b " + BSSID +
+             " -f" + QString::number(GLOBALS::BRUTEFORCE_FACTOR) +
+             + " " + files;
+diff -urN trunk.orig/attackarpreplay.cpp trunk/attackarpreplay.cpp
+--- trunk.orig/attackarpreplay.cpp	2017-07-19 18:01:29.421357742 +0300
++++ trunk/attackarpreplay.cpp	2017-07-19 18:16:16.533391400 +0300
+@@ -28,7 +28,7 @@
+         //cap have to be in source path of program
+         cap = cap.prepend(" -r ");
+ 
+-    const QString command = "../../" + AIREPLAY_COM + " -3 -b "
++    const QString command = AIREPLAY_COM + " -3 -b "
+                             + BSSID + MAC + cap + " -x" + QString::number(GLOBALS::SEND_RATE) + " " + GLOBALS::INTERFACE;
+ 
+     return startCommand(command);
+diff -urN trunk.orig/attackbroadcast.cpp trunk/attackbroadcast.cpp
+--- trunk.orig/attackbroadcast.cpp	2017-07-19 18:01:29.381357740 +0300
++++ trunk/attackbroadcast.cpp	2017-07-19 18:12:56.589383814 +0300
+@@ -22,7 +22,7 @@
+             MAC = " -h " + MAC; //add flag to mac
+     }
+ 
+-    const QString command = "../../" + AIREPLAY_COM +
++    const QString command = AIREPLAY_COM +
+                             " -2 -p 0841 -c FF:FF:FF:FF:FF:FF " +
+                             " -m " + QString::number(GLOBALS::BROADCAST_MIN_PACKET) +
+                             " -n " + QString::number(GLOBALS::BROADCAST_MAX_PACKET) +
+diff -urN trunk.orig/attackchopchop.cpp trunk/attackchopchop.cpp
+--- trunk.orig/attackchopchop.cpp	2017-07-19 18:01:29.377357740 +0300
++++ trunk/attackchopchop.cpp	2017-07-19 18:12:16.437382290 +0300
+@@ -23,7 +23,7 @@
+             MAC = " -h " + MAC; //add flag to mac
+     }
+ 
+-    const QString command = "../../" + AIREPLAY_COM +
++    const QString command = AIREPLAY_COM +
+             " -4 " +
+             " -m " + QString::number(GLOBALS::CHOP_MIN_PACKET) +
+             " -n " + QString::number(GLOBALS::CHOP_MAX_PACKET) +
+diff -urN trunk.orig/attackfragmentation.cpp trunk/attackfragmentation.cpp
+--- trunk.orig/attackfragmentation.cpp	2017-07-19 18:01:29.425357742 +0300
++++ trunk/attackfragmentation.cpp	2017-07-19 18:16:56.877392931 +0300
+@@ -23,7 +23,7 @@
+             MAC = " -h " + MAC; //add flag to mac
+     }
+ 
+-    const QString command = "../../" + AIREPLAY_COM +
++    const QString command = AIREPLAY_COM +
+             " -5 " +
+             " -m " + QString::number(GLOBALS::FRAG_MIN_PACKET) +
+             " -n " + QString::number(GLOBALS::FRAG_MAX_PACKET) +
+diff -urN trunk.orig/attackreaver.cpp trunk/attackreaver.cpp
+--- trunk.orig/attackreaver.cpp	2017-07-19 18:01:29.421357742 +0300
++++ trunk/attackreaver.cpp	2017-07-19 18:15:37.277389911 +0300
+@@ -12,7 +12,7 @@
+         return false;
+     }
+ 
+-    const QString command = "../../" + REAVER_COM + session + " -vv -a -b " + BSSID + " -i " + GLOBALS::INTERFACE;
++    const QString command = REAVER_COM + session + " -vv -a -b " + BSSID + " -i " + GLOBALS::INTERFACE;
+ 
+     return startCommand(command);
+ }

@@ -17,7 +17,8 @@ IUSE=""
 S=${WORKDIR}/aircrackgui-m4
 
 DEPEND="dev-qt/qtgui:4
-	dev-qt/qtcore:4"
+	dev-qt/qtcore:4
+	dev-db/sqlite"
 
 RDEPEND="${DEPEND}
 	net-analyzer/macchanger

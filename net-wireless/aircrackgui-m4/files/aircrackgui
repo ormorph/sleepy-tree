@@ -2,9 +2,9 @@
 
 if tty >/dev/null ; then
     cd /tmp
-    sudo /usr/share/aircrackgui-m4/aircrack-GUI
+    sudo /usr/share/aircrackgui-m4/start.sh
 else
     cd /tmp
-    gksudo /usr/share/aircrackgui-m4/aircrack-GUI
+    gksudo /usr/share/aircrackgui-m4/start.sh
 fi
 exit 0

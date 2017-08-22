@@ -5,8 +5,9 @@
 EAPI=5
 inherit qt4-r2 eutils
 
-DESCRIPTION=""
+DESCRIPTION="GUI frontend for aircrack-ng suite"
 HOMEPAGE="http://www.antepedia.com/Detail/p/aircrackgui-m4.html"
+#EGIT_REPO_URI="https://github.com/jessytheguru/aircrackgui-m4"
 SRC_URI="https://storage.googleapis.com/google-code-archive-source/v2/code.google.com/aircrackgui-m4/source-archive.zip -> ${P}.zip"
 
 
@@ -53,7 +54,7 @@ src_install() {
 	cd ${S}/trunk/
 	dobin ${FILESDIR}/aircrackgui
 	exeinto /usr/share/aircrackgui-m4
-	doexe aircrack-GUI
+	doexe aircrack-GUI ${FILESDIR}/start.sh
 	cd ${S}/aircrack-ng/src/
 	doexe aircrack-ng aireplay-ng airodump-ng
 	insinto /usr/share/icons

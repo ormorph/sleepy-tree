@@ -4,7 +4,7 @@
 
 EAPI=5
 inherit eutils
-DESCRIPTION=""
+DESCRIPTION="free program for downloading and listening to music in vk.com and lastfm"
 HOMEPAGE=""
 SRC_URI="amd64? ( http://vkaudiosaver.ru/downloads/vkaudiosaver-debian-amd64 -> vkaudiosaver-debian-amd64.deb )
 	x86? ( http://vkaudiosaver.ru/downloads/vkaudiosaver-debian-i386 -> vkaudiosaver-debian-i386.deb )"

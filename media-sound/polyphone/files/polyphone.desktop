@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Polyphone
+Comment=A soundfont editor for quickly designing musical instruments
+Exec=polyphone
+Terminal=false
+Type=Application
+Icon=polyphone
+Categories=AudioVideo
+StartupNotify=false

@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit eutils cmake-utils qmake-utils
+inherit eutils qmake-utils
 
 MY_P="76-${P}-1-8"
 DESCRIPTION="A soundfont editor for quickly designing musical instruments."

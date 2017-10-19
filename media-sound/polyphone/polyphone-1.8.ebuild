@@ -28,8 +28,6 @@ DEPEND="
 RDEPEND="${DEPEND}
 "
 
-DOCS="Changelog TODO"
-
 src_prepare() {
 	sed -i 's/#DEFINES += USE_LOCAL_STK/DEFINES += USE_LOCAL_STK/' polyphone.pro || die
 }

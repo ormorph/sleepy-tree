@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if tty -s ; then
+   sudo /usr/share/etcher/etcher-electron $@
+else
+   gksudo /usr/share/etcher/etcher-electron $@
+fi

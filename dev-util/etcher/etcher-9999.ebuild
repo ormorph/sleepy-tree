@@ -17,7 +17,8 @@ KEYWORDS="~amd64 ~x86"
 RDEPEND="net-libs/nodejs[npm]
 		app-misc/jq
 		dev-lang/python:2.7
-		net-misc/curl"
+		net-misc/curl
+		x11-libs/gksu"
 
 DEPEND="${RDEPEND}"
 
@@ -27,6 +28,8 @@ src_compile(){
 }
 
 src_install() {
+	into /usr
+	dobin ${FILESDIR}/etcher-electron
 	dodir /usr/share/etcher
 	dodir /usr/bin
 	cp -rfl ${S}/dist/linux-unpacked/* ${D}/usr/share/etcher/ || die
@@ -41,6 +44,5 @@ src_install() {
 	done
 	insinto /usr/share/applications
 	doins ${FILESDIR}/etcher-electron.desktop
-	dosym /usr/share/etcher/etcher-electron /usr/bin/etcher-electron
 }
 

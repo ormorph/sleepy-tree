@@ -10,7 +10,7 @@ inherit distutils-r1
 
 DESCRIPTION="off-line authoring environment to assist teachers and academics in the publishing of web content"
 HOMEPAGE="http://exelearning.net/"
-SRC_URI="http://cedec.educalab.es/es/docman/doc_download/207-exelearning-212-fuentes -> intef-exe-2.1.2-source.tgz"
+SRC_URI="http://descargas.educalab.es/cedec/exe_learning/${PV}/intef-exe-${PV}-source.tgz"
 LICENSE="GPL-2"
 RESTRICT="nomirror" # This is only because it's not in the gentoo tree yet
 SLOT="0"
@@ -30,7 +30,7 @@ DEPEND="dev-python/lxml
                 dev-lang/python:2.7"
 
 src_unpack() {
-        unpack intef-exe-2.1.2-source.tgz
+        unpack intef-exe-${PV}-source.tgz
 }
 
 python_install_all() {

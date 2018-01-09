@@ -11,10 +11,10 @@ SRC_URI="https://sourceforge.net/projects/yad-dialog/files/${P}.tar.xz"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+gtk3 gtk2"
-REQUIRED_USE="gtk2? ( !gtk3 )"
+IUSE="-gtk3 +gtk2"
+REQUIRED_USE="gtk2? ( !gtk3 ) gtk3? ( !gtk2 )"
 
-RDEPEND="!gtk3? ( x11-libs/gtk+:2 )
+RDEPEND="gtk2? ( x11-libs/gtk+:2 )
 	gtk3? ( x11-libs/gtk+:3 )
 	dev-libs/glib:2"
 

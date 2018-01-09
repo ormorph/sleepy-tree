@@ -6,7 +6,7 @@ EAPI=5
 
 inherit git-r3
 
-DESCRIPTION="Streaming torrent client for node.js"
+DESCRIPTION="Flash OS images to SD cards and USB drives, safely and easily"
 HOMEPAGE="https://github.com/resin-io/etcher"
 EGIT_REPO_URI="${HOMEPAGE}"
 

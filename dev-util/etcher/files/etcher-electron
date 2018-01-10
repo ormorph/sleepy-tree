@@ -5,3 +5,4 @@ if tty -s ; then
 else
    gksudo /usr/share/etcher/etcher-electron $@
 fi
+exit 0

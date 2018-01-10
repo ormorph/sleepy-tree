@@ -18,7 +18,8 @@ RDEPEND="net-libs/nodejs[npm]
 		app-misc/jq
 		dev-lang/python:2.7
 		net-misc/curl
-		x11-libs/gksu"
+		x11-libs/gksu
+		app-admin/sudo"
 
 DEPEND="${RDEPEND}"
 

@@ -34,7 +34,7 @@ src_install() {
 	if use sudo ; then
 	   cp ${FILESDIR}/etcher-electron ${WORKDIR}/
 	else
-	   cp ${FILESDIR}/etcher-electron1 ${WORKDIR}/
+	   cp ${FILESDIR}/etcher-electron1 ${WORKDIR}/etcher-electron
 	fi
 	dobin ${WORKDIR}/etcher-electron
 	dodir /usr/share/etcher

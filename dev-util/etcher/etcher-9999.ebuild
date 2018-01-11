@@ -13,13 +13,14 @@ EGIT_REPO_URI="${HOMEPAGE}"
 LICENSE="Apache"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
+IUSE="-sudo"
 
 RDEPEND="net-libs/nodejs[npm]
 		app-misc/jq
 		dev-lang/python:2.7
 		net-misc/curl
-		x11-libs/gksu
-		app-admin/sudo"
+		sudo? ( x11-libs/gksu )
+		sudo? ( app-admin/sudo )"
 
 DEPEND="${RDEPEND}"
 
@@ -30,7 +31,12 @@ src_compile(){
 
 src_install() {
 	into /usr
-	dobin ${FILESDIR}/etcher-electron
+	if use sudo ; then
+	   cp ${FILESDIR}/etcher-electron ${WORKDIR}/
+	else
+	   cp ${FILESDIR}/etcher-electron1 ${WORKDIR}/
+	fi
+	dobin ${WORKDIR}/etcher-electron
 	dodir /usr/share/etcher
 	dodir /usr/bin
 	cp -rfl ${S}/dist/linux-unpacked/* ${D}/usr/share/etcher/ || die

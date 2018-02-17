@@ -23,8 +23,8 @@ MODULE_NAMES="8821au(net/wireless)"
 
 src_compile(){
 	if [ "${ARCH}" = "amd64" ] ; then
-		export ARCH="x86_64"
-		emake $ARCH="x86_64" || die
+#		export ARCH="x86_64"
+		emake ARCH="x86_64" || die
 	else 
 		emake || die
 	fi

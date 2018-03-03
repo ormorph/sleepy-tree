@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Icon=openhantek
+Type=Application
+Categories=Development;Electronics;
+Exec=OpenHantek
+MimeType=application/x-openhantek-project;
+Name=OpenHantek
+GenericName=DSO software for Hantek
+X-Desktop-File-Install-Version=0.22

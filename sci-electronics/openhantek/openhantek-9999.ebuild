@@ -21,10 +21,10 @@ IUSE="test"
 DEPEND="sci-libs/fftw
 	dev-libs/libusb
 	dev-qt/qtprintsupport
-	dev-qt/qtopengl
-	dev-qt/qtgui
+	dev-qt/qtopengl:5
+	dev-qt/qtgui:5
 	dev-qt/qtwidgets
-	dev-qt/qtcore"
+	dev-qt/qtcore:5"
 
 RDEPEND="${DEPEND}"
 
@@ -34,7 +34,6 @@ BUILD_DIR="${S}"
 
 src_prepare() {
 	sed '/include(CMakeDetermineSystem)/d' -i cmake/CPackInfos.cmake
-	#epatch ${FILESDIR}/openhantek.patch
 	cmake-utils_src_prepare
 }
 

@@ -21,19 +21,20 @@ IUSE=""
 DEPEND="
 	dev-qt/qtcore:4
 	dev-qt/qtgui:4
-	dev-libs/qcustomplot
 	media-libs/rtmidi
 	media-libs/libicns
+	media-libs/stk
+	media-libs/libvorbis
+	media-libs/libogg
 "
-RDEPEND="${DEPEND}
-"
+RDEPEND="${DEPEND}"
 
 src_prepare() {
-	sed -i 's/#DEFINES += USE_LOCAL_STK/DEFINES += USE_LOCAL_STK/' polyphone.pro || die
+	sed -i 's/#DEFINES += USE_LOCAL_QCUSTOMPLOT/DEFINES += USE_LOCAL_QCUSTOMPLOT/' polyphone.pro || die
 }
 
 src_configure() {
-		eqmake4 ||die error eqmake
+		eqmake5 ||die error eqmake
 }
 
 src_compile() {
@@ -49,4 +50,8 @@ src_install() {
 	mv polyphone_128x128x32.png polyphone.png
 	dobin "${S}/RELEASE/polyphone"
 	doicon "${S}/polyphone.png"
+}
+
+pkg_postinst(){
+  gnome2_icon_cache_update
 }

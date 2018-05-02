@@ -21,6 +21,9 @@ IUSE=""
 DEPEND="
 	dev-qt/qtcore:5
 	dev-qt/qtgui:5
+	dev-qt/qtprintsupport
+	dev-qt/qtsvg:5
+	dev-qt/qtwidgets
 	media-libs/rtmidi
 	media-libs/libicns
 	media-libs/stk

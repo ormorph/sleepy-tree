@@ -19,8 +19,8 @@ S="${WORKDIR}/trunk"
 IUSE=""
 
 DEPEND="
-	dev-qt/qtcore:4
-	dev-qt/qtgui:4
+	dev-qt/qtcore:5
+	dev-qt/qtgui:5
 	media-libs/rtmidi
 	media-libs/libicns
 	media-libs/stk

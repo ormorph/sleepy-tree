@@ -6,14 +6,14 @@ EAPI=5
 
 inherit eutils qmake-utils
 
-MY_P="76-${P}-1-8"
+MY_P="555-${P}-1-9"
 DESCRIPTION="A soundfont editor for quickly designing musical instruments."
 HOMEPAGE="http://polyphone-soundfonts.com"
 
 SRC_URI="http://polyphone-soundfonts.com/en/download/file/${MY_P}-src-zip/latest/download -> ${P}-src.zip"
 
 LICENSE="GPL-2"
-SLOT="5"
+SLOT="0"
 KEYWORDS=""
 S="${WORKDIR}/trunk"
 IUSE=""

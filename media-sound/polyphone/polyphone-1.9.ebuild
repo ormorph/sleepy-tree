@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=5
+EAPI=6
 
 inherit eutils qmake-utils
 
@@ -33,7 +33,10 @@ DEPEND="
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	sed -i 's/#DEFINES += USE_LOCAL_QCUSTOMPLOT/DEFINES += USE_LOCAL_QCUSTOMPLOT/' polyphone.pro || die
+	sed -i 's/#DEFINES += USE_LOCAL_STK/DEFINES += USE_LOCAL_STK/' polyphone.pro || die
+	epatch "${FILESDIR}/${P}.patch"
+#	sed -i 's/#DEFINES += USE_LOCAL_QCUSTOMPLOT/DEFINES += USE_LOCAL_QCUSTOMPLOT/' polyphone.pro || die
+eapply_user
 }
 
 src_configure() {

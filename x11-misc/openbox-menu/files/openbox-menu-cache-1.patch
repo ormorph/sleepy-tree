@@ -1,0 +1,20 @@
+--- src/ob_display.c.orig	2018-02-26 20:10:14.471138769 +0300
++++ src/ob_display.c	2018-02-26 20:08:05.855137611 +0300
+@@ -44,7 +44,7 @@
+ 
+ 		g_string_append_printf (context->builder,
+ 		    "<menu id=\"openbox-%s\" label=\"%s\" icon=\"%s\">\n",
+-		    dir_id, dir_name, dir_icon);
++		    dir_id, dir_id, dir_icon);
+ 		g_free (dir_icon);
+ 	}
+ 	else
+@@ -52,7 +52,7 @@
+ 	{
+ 		g_string_append_printf (context->builder,
+ 	      "<menu id=\"openbox-%s\" label=\"%s\">\n",
+-	      dir_id, dir_name);
++	      dir_id, dir_id);
+ 	}
+ 
+ 	g_free (dir_id);

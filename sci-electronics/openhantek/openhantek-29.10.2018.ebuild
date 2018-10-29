@@ -9,6 +9,7 @@ inherit git-r3 cmake-utils
 DESCRIPTION="Digital Storage Oscilloscope"
 HOMEPAGE="http://www.openhantek.org/"
 EGIT_REPO_URI="https://github.com/OpenHantek/openhantek.git"
+EGIT_COMMIT="57e0bebcc1d4cf99d70071eae48604149332abd3"
 
 SRC_URI=""
 
@@ -27,6 +28,8 @@ DEPEND="sci-libs/fftw
 	dev-qt/qtcore:5"
 
 RDEPEND="${DEPEND}"
+
+KEYWORDS="*"
 
 BUILD_DIR="${S}"
 

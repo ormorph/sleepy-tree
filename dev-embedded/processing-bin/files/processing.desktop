@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Name=Processing
+Comment=Open-source prototyping platform
+Exec=processing
+Icon=
+Terminal=false
+Type=Application
+Categories=Development;
+StartupNotify=false

@@ -10,7 +10,7 @@ inherit distutils-r1
 
 DESCRIPTION="off-line authoring environment to assist teachers and academics in the publishing of web content"
 HOMEPAGE="http://exelearning.net/"
-SRC_URI="http://descargas.educalab.es/cedec/exe_learning/${PV}/intef-exe-${PV}-source.tgz -> intef-exe-${PV}-source.tgz"
+SRC_URI="http://descargas.pntic.mec.es/cedec/exe_learning/${PV}/intef-exe-${PV}-source.tgz -> intef-exe-${PV}-source.tgz"
 LICENSE="GPL-2"
 RESTRICT="nomirror" # This is only because it's not in the gentoo tree yet
 SLOT="0"

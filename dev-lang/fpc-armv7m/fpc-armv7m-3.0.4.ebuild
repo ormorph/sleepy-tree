@@ -32,7 +32,7 @@ src_compile() {
 }
 
 src_install() {
-	export PATH=$PATH:/opt/embarm/binexport PATH=$PATH:/opt/embarm/bin
+	export PATH=$PATH:/opt/embarm/bin
 	set -- INSTALL_PREFIX="${ED}"/usr
 
 	emake -j1 "$@" installbase CROSSINSTALL=1 OS_TARGET=embedded CPU_TARGET=arm SUBARCH=armv7m

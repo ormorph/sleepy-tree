@@ -6,16 +6,17 @@ EAPI=6
 
 inherit eutils qmake-utils
 
-MY_P="555-${P}-1-9"
+MY_P="611-${PN}-2-0"
 DESCRIPTION="A soundfont editor for quickly designing musical instruments."
 HOMEPAGE="http://polyphone-soundfonts.com"
 
-SRC_URI="http://polyphone-soundfonts.com/en/download/file/${MY_P}-src-zip/latest/download -> ${P}-src.zip"
+SRC_URI="https://www.polyphone-soundfonts.com/en/files/file/611-polyphone-2-0-src-zip/latest/download  -> ${P}-src.zip"
 
 LICENSE="GPL-2"
+
 SLOT="0"
-KEYWORDS=""
-S="${WORKDIR}/trunk"
+KEYWORDS="~amd64 ~x86"
+S="${WORKDIR}/sources"
 IUSE=""
 
 DEPEND="
@@ -28,18 +29,17 @@ DEPEND="
 	media-libs/rtmidi
 	media-libs/libvorbis
 	media-libs/libogg
+	media-libs/stk
 "
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	sed -i 's/#DEFINES += USE_LOCAL_STK/DEFINES += USE_LOCAL_STK/' polyphone.pro || die
-	epatch "${FILESDIR}/${P}.patch"
-#	sed -i 's/#DEFINES += USE_LOCAL_QCUSTOMPLOT/DEFINES += USE_LOCAL_QCUSTOMPLOT/' polyphone.pro || die
+	sed -i 's/#DEFINES += USE_LOCAL_QCUSTOMPLOT/DEFINES += USE_LOCAL_QCUSTOMPLOT/' polyphone.pro || die
 eapply_user
 }
 
 src_configure() {
-		eqmake5 ||die error eqmake
+		$(qt5_get_bindir)/qmake || die
 }
 
 src_compile() {
@@ -49,11 +49,14 @@ src_compile() {
 
 src_install() {
 	cd ${S}
-	mkdir -p ${D}/usr/share/applications
-	cp ${FILESDIR}/${PN}.desktop ${D}/usr/share/applications
+	insinto /usr/share/applications
+	doins ${FILESDIR}/${PN}.desktop
+	insinto /usr/share/mime/packages
+	doins ${FILESDIR}/${PN}.xml
+	doman ${FILESDIR}/polyphone.1
 	icns2png -x -s 128x128 polyphone.icns
 	mv polyphone_128x128x32.png polyphone.png
-	dobin "${S}/RELEASE/polyphone"
+	dobin "${S}/bin/polyphone"
 	doicon "${S}/polyphone.png"
 }
 

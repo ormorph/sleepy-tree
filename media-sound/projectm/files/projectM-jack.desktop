@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=projectM JackAudio Visualization
+GenericName=JackAudio Stream Visualization
+Comment=Visualization of JackAudio streams with projectM
+Exec=projectM_jack
+Icon=prjm16-transparent
+Terminal=false
+Type=Application
+Categories=AudioVideo;Audio;

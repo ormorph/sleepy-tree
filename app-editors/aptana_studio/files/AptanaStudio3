@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd /opt/aptana_studio
+./AptanaStudio3 $@

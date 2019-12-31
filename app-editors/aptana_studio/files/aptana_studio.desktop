@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=AptanaStudio3
+Comment=Web development IDE.
+GenericName=Web Editor
+Exec=/usr/bin/AptanaStudio3 %F
+Icon=aptana_studio
+Type=Application
+StartupNotify=true
+Categories=GNOME;GTK;Utility;Development;WebDevelopment;
+MimeType=text/plain;

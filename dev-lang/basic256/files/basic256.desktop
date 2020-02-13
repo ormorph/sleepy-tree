@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Basic256 IDE
+GenericName=Integrated development environment
+Comment=
+Exec=basic256 %F
+Icon=basic256
+Terminal=false
+X-MultipleArgs=false
+Categories=Development;IDE;Qt;
+StartupNotify=true
+MimeType=Categories=Qt;Development;

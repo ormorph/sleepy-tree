@@ -39,12 +39,8 @@ eapply_user
 }
 
 src_configure() {
-		$(qt5_get_bindir)/qmake || die
-}
-
-src_compile() {
-	cd ${S}
-	emake || die error emake
+#		$(qt5_get_bindir)/qmake || die
+		eqmake5 || die
 }
 
 src_install() {

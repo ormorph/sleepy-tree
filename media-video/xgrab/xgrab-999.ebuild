@@ -1,9 +1,9 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header:
 
-EAPI="5"
-inherit git-2
+EAPI="6"
+inherit git-r3 desktop
 
 DESCRIPTION="Yad interface for ffmpeg for capture video from the screen."
 HOMEPAGE="https://github.com/ormorph/xgrab"
@@ -26,5 +26,6 @@ src_install() {
     cp ${FILESDIR}/${PN}.desktop ${D}/usr/share/applications
     rm -rf ${S}/.git
     cp -rf ${S}/. ${D}/usr/share/${PN}
+    newicon icon/stop.png xgrab.png
     dobin ${FILESDIR}/${PN}
 }

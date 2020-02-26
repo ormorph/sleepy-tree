@@ -6,6 +6,6 @@ Comment[fr]=Interface pour recordmydesktop
 Exec=xgrab
 Terminal=false
 Type=Application
-Icon=
+Icon=xgrab
 Categories=AudioVideo;Recorder;
 StartupNotify=false

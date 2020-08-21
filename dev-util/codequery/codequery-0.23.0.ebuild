@@ -18,6 +18,8 @@ IUSE="-qt5"
 
 DEPEND="dev-libs/icu
 	dev-db/sqlite
+	dev-util/cscope
+	dev-util/ctags
 	qt5? ( dev-qt/qtwidgets:5=
 		dev-qt/qtgui:5=
 		dev-qt/qtcore:5=

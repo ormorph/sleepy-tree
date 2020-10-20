@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Myriapod
+Comment=Code the Classics Myriapod game
+TryExec=/usr/bin/pgzrun
+Exec=/usr/bin/pgzrun /usr/share/code-the-classics/myriapod/myriapod.py
+Icon=myriapod
+Terminal=false
+Type=Application
+Categories=Application;Game;
+StartupNotify=true

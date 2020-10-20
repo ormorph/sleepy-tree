@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Boing
+Comment=Code the Classics Boing game
+TryExec=/usr/bin/pgzrun
+Exec=/usr/bin/pgzrun /usr/share/code-the-classics/boing/boing.py
+Icon=boing
+Terminal=false
+Type=Application
+Categories=Application;Game;
+StartupNotify=true

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Bunner
+Comment=Code the Classics Bunner game
+TryExec=/usr/bin/pgzrun
+Exec=/usr/bin/pgzrun /usr/share/code-the-classics/bunner/bunner.py
+Icon=bunner
+Terminal=false
+Type=Application
+Categories=Application;Game;
+StartupNotify=true

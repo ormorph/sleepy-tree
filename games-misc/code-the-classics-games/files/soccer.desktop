@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Soccer
+Comment=Code the Classics Soccer game
+TryExec=/usr/bin/pgzrun
+Exec=/usr/bin/pgzrun /usr/share/code-the-classics/soccer/soccer.py
+Icon=soccer
+Terminal=false
+Type=Application
+Categories=Application;Game;
+StartupNotify=true

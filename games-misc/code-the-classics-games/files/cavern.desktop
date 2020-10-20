@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Cavern
+Comment=Code the Classics Cavern game
+TryExec=/usr/bin/pgzrun
+Exec=/usr/bin/pgzrun /usr/share/code-the-classics/cavern/cavern.py
+Icon=cavern
+Terminal=false
+Type=Application
+Categories=Application;Game;
+StartupNotify=true

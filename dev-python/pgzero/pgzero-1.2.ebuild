@@ -20,7 +20,8 @@ IUSE=""
 RESTRICT="nomirror"
 
 DEPEND="
-	dev-python/pygame
+	>=dev-python/setuptools-50.0
+	>=dev-python/pygame-2.0
 "
 
 RDEPEND=""

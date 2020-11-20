@@ -16,15 +16,13 @@ SRC_URI="https://github.com/trizen/${MY_PN}/archive/${PV}.tar.gz -> ${MY_PN}-${P
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64 ~arm ~arm64"
-IUSE="consolekit elogind upower"
-REQUIRED_USE="consolekit? ( !elogind ) elogind? ( !consolekit )"
+IUSE="elogind upower"
 RESTRICT="nomirror"
 
 DEPEND="dev-python/python-distutils-extra
 	dev-python/pillow
 	upower? ( || ( sys-power/upower-pm-utils sys-power/upower ) )
 	x11-libs/cairo
-	consolekit? ( sys-auth/consolekit )
 	elogind? ( sys-auth/elogind )"
 
 RDEPEND=""
@@ -35,15 +33,13 @@ python_install_all() {
         distutils-r1_python_install_all
 	if use elogind ; then
 		cp ${FILESDIR}/oblogout-elogind.conf ${S}/oblogout.conf
-	elif use consolekit ; then
-		cp ${FILESDIR}/oblogout-consolekit.conf ${S}/oblogout.conf
 	else
 		cp ${FILESDIR}/oblogout.conf ${S}/oblogout.conf
 	fi
 	insinto /etc
 	doins ${S}/oblogout.conf || die
 	if use upower ; then
-		sed 's/, lock/, shutdown, suspend, hibernate, lock/' \
+		sed 's/, lock/, suspend, hibernate, lock/' \
 		-i ${D}/etc/oblogout.conf || die
 	fi
 }

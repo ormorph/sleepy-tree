@@ -21,9 +21,11 @@ RESTRICT="nomirror"
 
 DEPEND="
 	>=dev-python/setuptools-50.0
-	>=dev-python/pygame-2.0
+	dev-python/pygame
 "
 
 RDEPEND=""
 
 S="${WORKDIR}/${PN}-${MY_PV}"
+
+PATCHES=( ${FILESDIR}/pgzero-setup.patch )

@@ -14,7 +14,7 @@ KEYWORDS="~x86 ~amd64"
 IUSE=""
 
 RDEPEND="gnome-extra/yad
-         virtual/ffmpeg
+         media-video/ffmpeg
          x11-apps/xrandr
          x11-apps/xwininfo
          x11-apps/xrectsel"

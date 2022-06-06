@@ -2,14 +2,13 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=3
+EAPI=7
 
 inherit eutils
 
 DESCRIPTION="keyboard layout switcher"
 HOMEPAGE="http://sourceforge.net/projects/staybox"
 SRC_URI="http://ftp.uni-stuttgart.de/pub/mirrors/mirror.slitaz.org/slitaz/sources/packages/s/${P}.tar.gz"
-
 
 
 LICENSE="GPL"
@@ -25,7 +24,8 @@ DEPEND="x11-libs/libXrandr
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-  epatch "${FILESDIR}/sbxkb-x11.patch"
+  eapply -p0 "${FILESDIR}/sbxkb-x11.patch"
+  default
 }
 
 src_configure() {

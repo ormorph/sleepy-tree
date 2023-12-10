@@ -1,17 +1,15 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2023 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header:$
 
-EAPI="6"
+EAPI="7"
 
-inherit git-r3 cmake-utils
+inherit cmake desktop
+
+COMMIT="57e0bebcc1d4cf99d70071eae48604149332abd3"
 
 DESCRIPTION="Digital Storage Oscilloscope"
 HOMEPAGE="http://www.openhantek.org/"
-EGIT_REPO_URI="https://github.com/OpenHantek/openhantek.git"
-EGIT_COMMIT="57e0bebcc1d4cf99d70071eae48604149332abd3"
-
-SRC_URI=""
+SRC_URI="https://github.com/OpenHantek/openhantek/archive/${COMMIT}.tar.gz -> ${p}.tar.gz"
 
 LICENSE="GPL-3"
 
@@ -29,21 +27,19 @@ DEPEND="sci-libs/fftw
 
 RDEPEND="${DEPEND}"
 
-KEYWORDS="*"
+KEYWORDS="~amd64 ~arm64"
+
+S="${WORKDIR}/${PN}-${COMMIT}"
 
 BUILD_DIR="${S}"
 
 src_prepare() {
 	sed '/include(CMakeDetermineSystem)/d' -i cmake/CPackInfos.cmake
-	cmake-utils_src_prepare
-}
-
-src_configure() {
-	cmake-utils_src_configure
+	cmake_src_prepare
 }
 
 src_install() {
-	emake install DESTDIR=${D} || die
+	cmake_src_install
 	insinto /usr/share/applications
 	doins ${FILESDIR}/openhantek.desktop
 	newicon openhantek/res/images/openhantek.png openhantek.png

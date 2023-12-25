@@ -1,0 +1,77 @@
+--- a/engines/legacy.c	2023-11-04 08:43:31.230033419 +0300
++++ b/engines/legacy.c	2023-11-04 08:43:44.025033691 +0300
+@@ -64,7 +64,7 @@
+     /* old themes are marked still compatible */
+     emi->last_compat = g_strdup("0.0");
+ 
+-    pixbuf_data = g_memdup(LEGACY_ICON_PIXEL_DATA,
++    pixbuf_data = g_memdup2(LEGACY_ICON_PIXEL_DATA,
+                            LEGACY_ICON_ROWSTRIDE * LEGACY_ICON_HEIGHT);
+     emi->icon = gdk_pixbuf_new_from_data(pixbuf_data, GDK_COLORSPACE_RGB,
+                                          (LEGACY_ICON_BYTES_PER_PIXEL != 3), 8,
+--- a/engines/line.c	2023-11-04 08:43:31.231033419 +0300
++++ b/engines/line.c	2023-11-04 08:43:44.028033691 +0300
+@@ -56,7 +56,7 @@
+     /* old themes are marked still compatible */
+     emi->last_compat = g_strdup("0.0");
+ 
+-    pixbuf_data = g_memdup(LEGACY_ICON_PIXEL_DATA,
++    pixbuf_data = g_memdup2(LEGACY_ICON_PIXEL_DATA,
+                            LEGACY_ICON_ROWSTRIDE * LEGACY_ICON_HEIGHT);
+     emi->icon = gdk_pixbuf_new_from_data(pixbuf_data, GDK_COLORSPACE_RGB,
+                                          (LEGACY_ICON_BYTES_PER_PIXEL != 3), 8,
+--- a/engines/oxygen.c	2023-11-04 08:43:31.232033419 +0300
++++ b/engines/oxygen.c	2023-11-04 08:43:44.031033691 +0300
+@@ -60,7 +60,7 @@
+     /* old themes are marked still compatible for testing-NeOS */
+     emi->last_compat = g_strdup("0.0");
+ 
+-    pixbuf_data = g_memdup(OXYGEN_ICON_PIXEL_DATA,
++    pixbuf_data = g_memdup2(OXYGEN_ICON_PIXEL_DATA,
+                            OXYGEN_ICON_ROWSTRIDE * OXYGEN_ICON_HEIGHT);
+     emi->icon = gdk_pixbuf_new_from_data(pixbuf_data, GDK_COLORSPACE_RGB,
+                                          (OXYGEN_ICON_BYTES_PER_PIXEL != 3), 8,
+--- a/engines/pixmap.c	2023-11-04 08:43:31.233033419 +0300
++++ b/engines/pixmap.c	2023-11-04 08:43:44.034033691 +0300
+@@ -125,7 +125,7 @@
+     /* old themes are marked still compatible */
+     emi->last_compat = g_strdup("0.0");
+ 
+-    pixbuf_data = g_memdup(PIXMAP_ICON_PIXEL_DATA,
++    pixbuf_data = g_memdup2(PIXMAP_ICON_PIXEL_DATA,
+                            PIXMAP_ICON_ROWSTRIDE * PIXMAP_ICON_HEIGHT);
+     emi->icon = gdk_pixbuf_new_from_data(pixbuf_data, GDK_COLORSPACE_RGB,
+                                          (PIXMAP_ICON_BYTES_PER_PIXEL != 3), 8,
+--- a/engines/truglass.c	2023-11-04 08:43:31.234033419 +0300
++++ b/engines/truglass.c	2023-11-04 08:43:44.036033691 +0300
+@@ -68,7 +68,7 @@
+     /* old themes are marked still compatible for now */
+     emi->last_compat = g_strdup("0.0");
+ 
+-    pixbuf_data = g_memdup(TRUGLASS_ICON_PIXEL_DATA,
++    pixbuf_data = g_memdup2(TRUGLASS_ICON_PIXEL_DATA,
+                            TRUGLASS_ICON_ROWSTRIDE * TRUGLASS_ICON_HEIGHT);
+     emi->icon = gdk_pixbuf_new_from_data(pixbuf_data, GDK_COLORSPACE_RGB,
+                                          (TRUGLASS_ICON_BYTES_PER_PIXEL != 3),
+--- a/engines/vrunner.c	2023-11-04 08:43:31.236033419 +0300
++++ b/engines/vrunner.c	2023-11-04 08:43:44.039033691 +0300
+@@ -78,7 +78,7 @@
+     /* old themes are marked still compatible for now */
+     emi->last_compat = g_strdup("0.0");
+ 
+-    pixbuf_data = g_memdup(VRUNNER_ICON_PIXEL_DATA,
++    pixbuf_data = g_memdup2(VRUNNER_ICON_PIXEL_DATA,
+                            VRUNNER_ICON_ROWSTRIDE * VRUNNER_ICON_HEIGHT);
+     emi->icon = gdk_pixbuf_new_from_data(pixbuf_data, GDK_COLORSPACE_RGB,
+                                          (VRUNNER_ICON_BYTES_PER_PIXEL != 3),
+--- a/engines/zootreeves.c	2023-11-04 08:43:31.237033419 +0300
++++ b/engines/zootreeves.c	2023-11-04 08:43:44.042033691 +0300
+@@ -115,7 +115,7 @@
+     /* old themes are marked still compatible for testing-NeOS */
+     emi->last_compat = g_strdup("0.0");
+ 
+-    pixbuf_data = g_memdup(ZOOTREEVES_ICON_PIXEL_DATA,
++    pixbuf_data = g_memdup2(ZOOTREEVES_ICON_PIXEL_DATA,
+                            ZOOTREEVES_ICON_ROWSTRIDE * ZOOTREEVES_ICON_HEIGHT);
+     emi->icon = gdk_pixbuf_new_from_data(pixbuf_data, GDK_COLORSPACE_RGB,
+                                          (ZOOTREEVES_ICON_BYTES_PER_PIXEL != 3),

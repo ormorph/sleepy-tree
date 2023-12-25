@@ -1,0 +1,11 @@
+--- a/themer/main.c	2023-11-04 08:03:44.528766480 +0300
++++ b/themer/main.c	2023-11-04 08:11:59.350745786 +0300
+@@ -512,7 +512,7 @@
+     at = g_shell_quote(fn);
+     g_free(fn);
+     fn = g_shell_quote(file);
+-    ot = g_strdup_printf("tar -czf %s -C %s ./ --exclude=*~",fn,at);
++    ot = g_strdup_printf("tar -czf %s -C %s --exclude=*~ ./",fn,at);
+     if (!g_spawn_command_line_sync(ot,NULL,NULL,&ex,NULL) ||
+             (WIFEXITED(ex)&&WEXITSTATUS(ex)))
+     {

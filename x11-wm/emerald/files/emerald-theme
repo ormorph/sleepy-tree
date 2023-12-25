@@ -1,0 +1,42 @@
+#!/bin/bash
+
+THEME="$1"
+TMP_DIR="$(mktemp -u --tmpdir emerald_XXXXXXXX)"
+
+if ! [ -d "${TMP_DIR}" ] ; then
+	mkdir -p "${TMP_DIR}"
+else
+	echo "This directory exists: ${TMP_DIR}"
+	exit 1
+fi
+
+if [ -f "${THEME}" ] ; then
+	tar -xzf "${THEME}" -C ${TMP_DIR}
+	THEME_DIR="$(find ${TMP_DIR}/ -mindepth 1 -type d)"
+	echo "${THEME_DIR}"
+	if [ -f "${THEME_DIR}/theme.ini" ] ; then
+		if [ -d "${HOME}/.emerald/theme" ] ; then
+			rm -rf "${HOME}/.emerald/theme" || echo "rm ${HOME}/.emerald/theme not"
+			mkdir "${HOME}/.emerald/theme" || echo "mkdir ${HOME}/.emerald/theme not"
+		else
+			mkdir -p "${HOME}/.emerald/theme" || echo "mkdir ${HOME}/.emerald/theme not not"
+		fi
+		cp -rf "${THEME_DIR}"/* "${HOME}/.emerald/theme"/
+	elif [ -f "${TMP_DIR}/theme.ini" ] ; then
+		if [ -d "${HOME}/.emerald/theme" ] ; then
+			rm -rf "${HOME}/.emerald/theme" || echo "rm ${HOME}/.emerald/theme not"
+			mkdir "${HOME}/.emerald/theme" || echo "mkdir ${HOME}/.emerald/theme not"
+		else
+			mkdir -p "${HOME}/.emerald/theme" || echo "mkdir ${HOME}/.emerald/theme not not"
+		fi
+		cp -rf "${TMP_DIR}"/* "${HOME}/.emerald/theme"/
+	else
+		echo "This archive is not supported by this script"
+		rm -rf "${TMP_DIR}"
+		exit 1
+	fi
+else
+	echo "not theme"
+fi
+
+rm -rf "${TMP_DIR}"

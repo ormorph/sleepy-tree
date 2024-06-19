@@ -1,0 +1,22 @@
+#!/bin/bash
+
+source /etc/profile
+export XDG_RUNTIME_DIR="/var/run/user/509"
+
+start() {
+	dbus-launch /usr/bin/gentoo-pipewire-launcher &
+#	sleep 2s; bluetoothctl connect XX:XX:XX:XX:XX:XX &
+	chmod 777 /var/run/user/509/pipewire-0
+}
+
+restart() {
+	dbus-launch /usr/bin/gentoo-pipewire-launcher restart
+	#sleep 2s; bluetoothctl connect XX:XX:XX:XX:XX:XX &
+}
+
+if [ "$1" = "restart" ] ; then
+	restart
+else
+	start
+fi
+exit 0

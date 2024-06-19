@@ -1,0 +1,34 @@
+#!/sbin/openrc-run
+
+piddir="/var/run/pipewire"
+
+depend() {
+        need dbus
+}
+
+start() {
+	mkdir "${piddir}"
+	pidfile="${piddir}/pipewire.pid"
+	ebegin "Starting Pipewire"
+	mkdir -p /var/run/user/509
+	chown 509:509 /var/run/user/509
+	start-stop-daemon -u $(id -nu 509) --start --exec /usr/bin/pipewiredaemon -- \
+		-pidfile ${pidfile}
+	pidof pipewire >"${pidfile}"
+	eend $?
+}
+
+restart() {
+	pidfile="/var/run/pipewire/pipewire.pid"
+	ebegin "Restarting the Pipewire"
+	start-stop-daemon -u $(id -nu 509) --start --exec /usr/bin/pipewiredaemon -- \
+		-pidfile ${pidfile} restart
+	pidof pipewire >"${pidfile}"
+	eend $?
+}
+
+stop() {
+	pidfile="/var/run/pipewire/pipewire.pid"
+	kill -9 $(cat "${pidfile}")
+	rm -rf "${piddir}"
+}

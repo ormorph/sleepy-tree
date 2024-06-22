@@ -1,0 +1,9 @@
+if (( $user != "pipewire" )) then
+	rc-status | grep -q pipewire
+	if ( $? == 0 ) then
+		setenv PULSE_SERVER "tcp:127.0.0.1:4713"
+		if ( ( ! -e "/run/user/$uid/pipewire-0" ) ) then
+			ln -sf /run/user/509/pipewire-0 "/run/user/$UID/pipewire-0"
+		endif
+	endif
+endif

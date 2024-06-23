@@ -22,7 +22,7 @@ S="${WORKDIR}"
 
 src_prepare() {
 	cp /usr/share/pipewire/pipewire-pulse.conf "${S}/" || die
-	sed '/"tcp:4713"/a \        "unix:/tmp/pipewire-daemon-socket"' -i "${S}/pipewire-pulse.conf"
+	sed '/#"tcp:4713"/a \        "unix:/tmp/pipewire-daemon-socket"' -i "${S}/pipewire-pulse.conf"
 	eapply_user
 }
 
@@ -35,4 +35,6 @@ src_install() {
 	doins "pipewire-pulse.conf"
 	insinto "/etc/profile.d"
 	doins "${FILESDIR}/pipewire.sh" "${FILESDIR}/pipewire.csh"
+	keepdir "/var/lib/pipewire"
+	fowners pipewire:pipewire  "/var/lib/pipewire"
 }

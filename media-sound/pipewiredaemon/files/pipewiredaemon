@@ -2,6 +2,7 @@
 
 source /etc/profile
 export XDG_RUNTIME_DIR="/var/run/user/509"
+export HOME="/var/lib/pipewire"
 
 start() {
 	dbus-launch /usr/bin/gentoo-pipewire-launcher &

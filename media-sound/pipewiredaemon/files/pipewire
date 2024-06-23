@@ -9,29 +9,40 @@ depend() {
 start() {
 	mkdir "${piddir}"
 	pidfile="${piddir}/pipewire.pid"
+	local ret=0
+	if ! [ -d "/var/run/user/509" ] ; then
+		mkdir -p /var/run/user/509
+		chown 509:509 /var/run/user/509
+	fi
 	ebegin "Starting Pipewire"
-	mkdir -p /var/run/user/509
-	chown 509:509 /var/run/user/509
 	start-stop-daemon -u $(id -nu 509) --start --exec /usr/bin/pipewiredaemon -- \
 		-pidfile ${pidfile}
+	eend $?
+	ret=$((ret + $?))
 	sleep 0.1s
 	PIDS="$(pgrep pipewire -G pipewire ) $(pgrep dbus-daemon -G pipewire)"
 	echo $PIDS >"${pidfile}"
-	eend $?
+	return ${ret}
 }
 
 restart() {
-	pidfile="/var/run/pipewire/pipewire.pid"
+	pidfile="${piddir}/pipewire.pid"
+	kill -9 $(cat "${pidfile}")
+	local ret=0
 	ebegin "Restarting the Pipewire"
 	start-stop-daemon -u $(id -nu 509) --start --exec /usr/bin/pipewiredaemon -- \
 		-pidfile ${pidfile} restart
+	eend $?
+	ret=$((ret + $?))
+	sleep 0.1s
 	PIDS="$(pgrep pipewire -G pipewire ) $(pgrep dbus-daemon -G pipewire)"
 	echo $PIDS >"${pidfile}"
-	eend $?
+	return ${ret}
 }
 
 stop() {
 	pidfile="/var/run/pipewire/pipewire.pid"
 	kill -9 $(cat "${pidfile}")
 	rm -rf "${piddir}"
+	return 0
 }

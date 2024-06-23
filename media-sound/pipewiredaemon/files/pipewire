@@ -14,7 +14,9 @@ start() {
 	chown 509:509 /var/run/user/509
 	start-stop-daemon -u $(id -nu 509) --start --exec /usr/bin/pipewiredaemon -- \
 		-pidfile ${pidfile}
-	pidof pipewire >"${pidfile}"
+	sleep 0.1s
+	PIDS="$(pgrep pipewire -G pipewire ) $(pgrep dbus-daemon -G pipewire)"
+	echo $PIDS >"${pidfile}"
 	eend $?
 }
 
@@ -23,7 +25,8 @@ restart() {
 	ebegin "Restarting the Pipewire"
 	start-stop-daemon -u $(id -nu 509) --start --exec /usr/bin/pipewiredaemon -- \
 		-pidfile ${pidfile} restart
-	pidof pipewire >"${pidfile}"
+	PIDS="$(pgrep pipewire -G pipewire ) $(pgrep dbus-daemon -G pipewire)"
+	echo $PIDS >"${pidfile}"
 	eend $?
 }
 

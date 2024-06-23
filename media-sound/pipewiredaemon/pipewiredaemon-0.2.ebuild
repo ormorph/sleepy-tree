@@ -22,7 +22,7 @@ S="${WORKDIR}"
 
 src_prepare() {
 	cp /usr/share/pipewire/pipewire-pulse.conf "${S}/" || die
-	sed 's/#"tcp:4713"/"tcp:4713"/' -i "${S}/pipewire-pulse.conf" || die
+	sed '/"tcp:4713"/a \        "unix:/tmp/pipewire-daemon-socket"' -i "${S}/pipewire-pulse.conf"
 	eapply_user
 }
 

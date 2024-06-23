@@ -6,7 +6,7 @@ export XDG_RUNTIME_DIR="/var/run/user/509"
 start() {
 	dbus-launch /usr/bin/gentoo-pipewire-launcher &
 #	sleep 2s; bluetoothctl connect XX:XX:XX:XX:XX:XX &
-	chmod 777 /var/run/user/509/pipewire-0
+	sleep 0.1s && chmod 777 /var/run/user/509/pipewire-0 &
 }
 
 restart() {

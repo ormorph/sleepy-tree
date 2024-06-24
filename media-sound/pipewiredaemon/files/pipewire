@@ -1,6 +1,7 @@
 #!/sbin/openrc-run
 
 piddir="/var/run/pipewire"
+user_dir="/var/run/user/$(id -u pipewire)"
 
 depend() {
         need dbus
@@ -10,12 +11,12 @@ start() {
 	mkdir "${piddir}"
 	pidfile="${piddir}/pipewire.pid"
 	local ret=0
-	if ! [ -d "/var/run/user/509" ] ; then
-		mkdir -p /var/run/user/509
-		chown 509:509 /var/run/user/509
+	if ! [ -d "${user_dir}" ] ; then
+		mkdir -p "${user_dir}"
+		chown pipewire:pipewire "${user_dir}"
 	fi
 	ebegin "Starting Pipewire"
-	start-stop-daemon -u $(id -nu 509) --start --exec /usr/bin/pipewiredaemon -- \
+	start-stop-daemon -u pipewire --start --exec /usr/bin/pipewiredaemon -- \
 		-pidfile ${pidfile}
 	eend $?
 	ret=$((ret + $?))
@@ -30,7 +31,7 @@ restart() {
 	kill -9 $(cat "${pidfile}")
 	local ret=0
 	ebegin "Restarting the Pipewire"
-	start-stop-daemon -u $(id -nu 509) --start --exec /usr/bin/pipewiredaemon -- \
+	start-stop-daemon -u pipewire --start --exec /usr/bin/pipewiredaemon -- \
 		-pidfile ${pidfile} restart
 	eend $?
 	ret=$((ret + $?))

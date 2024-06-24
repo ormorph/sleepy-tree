@@ -1,12 +1,12 @@
 #!/bin/bash
 
 source /etc/profile
-export XDG_RUNTIME_DIR="/var/run/user/509"
+export XDG_RUNTIME_DIR="/var/run/user/$(id -u pipewire)"
 export HOME="/var/lib/pipewire"
 
 start() {
 	dbus-launch /usr/bin/gentoo-pipewire-launcher &
-#	sleep 2s; bluetoothctl connect XX:XX:XX:XX:XX:XX &
+	#sleep 2s; bluetoothctl connect XX:XX:XX:XX:XX:XX &
 	sleep 0.1s && chmod 777 /var/run/user/509/pipewire-0 &
 }
 

@@ -1,0 +1,20 @@
+--- a/asoundconf-gtk/asoundconf-gtk	2024-06-25 19:31:42.693587802 +0300
++++ b/asoundconf-gtk/asoundconf-gtk	2024-06-25 19:35:15.703600195 +0300
+@@ -139,7 +139,7 @@
+ 		self.window.set_title("Default Sound Card")
+ 		self.window.set_position(Gtk.WindowPosition.CENTER)
+ 		# Create an HBox box
+-		self.selectionbox = Gtk.HBox.new(False, 0)
++		self.selectionbox = Gtk.Box.new(Gtk.Orientation.HORIZONTAL, 0)
+ 		# Create a button
+ 		self.button = Gtk.Button.new_with_label("Quit")
+ 		#self.button.connect("clicked", self.reset, None)
+@@ -172,7 +172,7 @@
+ 		self.selectionbox.pack_start(self.combo, True, True, 0)		
+ 		self.selectionbox.pack_start(self.button, True, True, 0)
+ 		# Create a VBox
+-		self.vbox = Gtk.VBox.new(False, CTL_SPACING)
++		self.vbox = Gtk.Box.new(Gtk.Orientation.VERTICAL, CTL_SPACING)
+ 		self.window.add(self.vbox)
+ 		self.vbox.pack_start(self.label, True, True, 0)
+ 		self.vbox.pack_start(self.selectionbox, True, True, 0)

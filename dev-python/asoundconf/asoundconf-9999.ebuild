@@ -21,4 +21,5 @@ PATCHES=(
 	"${FILESDIR}/0001-python3-syntax.patch"
 	"${FILESDIR}/0002-python3-spaces.patch"
 	"${FILESDIR}/0003-python3-gobject.patch"
+	"${FILESDIR}/0004-python-re.patch"
 )

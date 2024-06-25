@@ -1,0 +1,21 @@
+diff '--color=auto' -urN asoundconf-9999.orig/asoundconf asoundconf-9999/asoundconf
+--- asoundconf-9999.orig/asoundconf	2024-06-25 16:36:33.536806204 +0300
++++ asoundconf-9999/asoundconf	2024-06-25 16:37:50.063477324 +0300
+@@ -15,7 +15,7 @@
+ asoundrc_file = os.path.expanduser('~/.asoundrc')
+ predefs_file = '/usr/share/alsa/alsa.conf'
+ 
+-setting_re_template = '!?\s*%s\s*(?:=|\s)\s*([^;,]+)[;,]?$'
++setting_re_template = r'!?\s*%s\s*(?:=|\s)\s*([^;,]+)[;,]?$'
+ 
+ our_conf_header = '''# ALSA library configuration file managed by asoundconf(1).
+ #
+@@ -203,7 +203,7 @@
+     sds_transition()
+ 
+     # check whether or not the file has the inclusion line
+-    include_re = re.compile('\s*<\s*%s\s*>' % our_conf_file)
++    include_re = re.compile(r'\s*<\s*%s\s*>' % our_conf_file)
+     for l in open(asoundrc_file):
+         if include_re.match(l):
+             return True

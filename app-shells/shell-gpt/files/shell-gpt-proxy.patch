@@ -1,0 +1,19 @@
+--- a/sgpt/handlers/handler.py	2024-09-28 00:35:04.637342936 +0300
++++ b/sgpt/handlers/handler.py	2024-09-28 00:35:53.542340890 +0300
+@@ -24,9 +24,15 @@
+     completion = litellm.completion
+     litellm.suppress_debug_info = True
+ else:
++    import os, httpx
+     from openai import OpenAI
+ 
+-    client = OpenAI(**additional_kwargs)  # type: ignore
++    http_proxy = os.getenv('SGPT_HTTP_PROXY')
++    if http_proxy:
++        client = OpenAI(**additional_kwargs, http_client=httpx.Client(proxy=http_proxy))
++    else:
++        client = OpenAI(**additional_kwargs)  # type: ignore
++
+     completion = client.chat.completions.create
+     additional_kwargs = {}
+ 

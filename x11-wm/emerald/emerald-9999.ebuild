@@ -21,6 +21,10 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}/${PN}-object-0.8.18".patch
+)
+
 src_prepare() {
 	default
 	eautoreconf

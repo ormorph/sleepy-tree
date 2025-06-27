@@ -1,0 +1,54 @@
+--- a/libengine/themer.c	2025-06-27 08:59:55.395399950 +0300
++++ b/libengine/themer.c	2025-06-27 09:00:00.015399757 +0300
+@@ -512,7 +512,7 @@
+ }
+ gdouble get_float(SettingItem * item)
+ {
+-    if(g_strcmp0(G_OBJECT_TYPE_NAME(item->widget),"GtkSpinButton") == 0) {
++    if(g_strcmp0(gtk_widget_get_name(item->widget),"GtkSpinButton") == 0) {
+          return gtk_spin_button_get_value((GtkSpinButton *)item->widget);
+     }
+     else {
+@@ -713,7 +713,7 @@
+ }
+ void set_float(SettingItem * item, gdouble f)
+ {
+-    if(g_strcmp0(G_OBJECT_TYPE_NAME(item->widget),"GtkSpinButton") == 0) {
++    if(g_strcmp0(gtk_widget_get_name(item->widget),"GtkSpinButton") == 0) {
+          gtk_spin_button_set_value((GtkSpinButton *)item->widget, f);
+     } 
+     else {
+--- a/themer/main.c	2025-06-27 08:59:55.397399950 +0300
++++ b/themer/main.c	2025-06-27 09:00:35.952398254 +0300
+@@ -401,12 +401,18 @@
+         at = g_strdup_printf("%s/.emerald/themes/%s/",g_get_home_dir(),mt);
+     }
+     dr = g_dir_open(at,0,NULL);
++    g_free(at);
+     while (dr && (gt = (gchar *)g_dir_read_name(dr)))
+     {
+         gchar * nt;
+         gsize len;
+         gchar * ft;
++        if (dist)
++            at = g_strdup_printf(DATA_DIR "/emerald/themes/%s/",mt);
++        else
++            at = g_strdup_printf("%s/.emerald/themes/%s/",g_get_home_dir(),mt);
+         ft = g_strdup_printf("%s/%s",at,gt);
++        g_free(at);
+         if (g_file_get_contents(ft,&nt,&len,NULL))
+         {
+             g_free(ft);
+@@ -424,12 +430,10 @@
+     {
+         g_free(fn);
+         g_key_file_free(f);
+-        g_free(at);
+         error_dialog("Invalid Theme File / Name");
+         return;
+     }
+     gtk_entry_set_text(GTK_ENTRY(EntryBox),mt);
+-    g_free(at);
+     set_changed(TRUE);
+     set_apply(FALSE);
+     g_slist_foreach(get_setting_list(),(GFunc) read_setting,f);

@@ -25,6 +25,7 @@ S="${WORKDIR}/${PN}-v${PV}"
 PATCHES=(
 	"${FILESDIR}/${PN}-tar-${PV}".patch
 	"${FILESDIR}/${PN}-g_memdup-${PV}".patch
+	"${FILESDIR}/${PN}-object-${PV}".patch
 )
 
 src_prepare() {
